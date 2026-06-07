@@ -15,13 +15,6 @@ dist-ssr
 .env.*
 !.env.example
 
-# Claude Code
-.claude/
-docs/
-
-# Firebase
-.firebase/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -32,4 +25,3 @@ docs/
 *.njsproj
 *.sln
 *.sw?
-CLAUDE.md
