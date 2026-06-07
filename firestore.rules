@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /results/{resultId} {
+      // Anyone can read results (leaderboard is public)
+      allow read: if true;
+
+      // Write validation: score must be consistent with difficulty and correctAnswers
+      allow create: if
+        request.resource.data.name is string &&
+        request.resource.data.name.size() > 0 &&
+        request.resource.data.name.size() <= 32 &&
+        request.resource.data.score is int &&
+        request.resource.data.score >= 0 &&
+        request.resource.data.correctAnswers is int &&
+        request.resource.data.correctAnswers >= 0 &&
+        request.resource.data.difficulty is int &&
+        request.resource.data.difficulty >= 2 &&
+        request.resource.data.difficulty <= 20 &&
+        request.resource.data.score == request.resource.data.difficulty * request.resource.data.correctAnswers &&
+        request.resource.data.correctAnswers <= 60;
+
+      // No updates or deletes from client
+      allow update, delete: if false;
+    }
+  }
+}
